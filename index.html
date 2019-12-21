@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta content='http://erroridentification.dragoniceinteractive.com/' property='og:url' />
+    <meta content='Error Identification' property='og:title' />
+    <meta content="เกม ฝึก แกรมม่าร์ภาษาอังกฤษ" property='og:description' />
+    <meta
+        content='img/Featured_BG.png'
+        property='og:image' />
+
     <title>Error Identification</title>
 </head>
 <style>
@@ -42,51 +50,255 @@
     }
     
 </style>
+<script src="data/data.js"></script>
 <script>
-    function addPlayEvent(){
-        document.body.addEventListener("click", function () {
-        playMusic();
-        })
+    var backgroundList = [
+        "img/Unlock_CG1.png",
+        "img/Unlock_CG1.png",
+        "img/Unlock_CG2.png",
+        "img/Unlock_CG3.png",
+        "img/Unlock_CG4.png"
+    ];
+    function playMusic(id){
+        for(var i=0;i<5;i++){
+            if(i==id){
+                document.getElementById('player_' + i).play();
+            }else{
+                document.getElementById('player_' + i).pause();
+                document.getElementById('player_' + i).currentTime = 0;
+            }
+        }
     }
-    function playMusic(){
-        document.getElementById('player').play();
+    function select_menu(id, text){
+        document.getElementById('se_click').play();
+        playMusic(id);
+        document.body.style.backgroundImage = "url(" + backgroundList[id] + ")";
+        document.getElementById('menu_container').style.display = 'none';
+        document.getElementById('question_container').style.display = 'block';
+        document.getElementById('result_container').style.display = 'none';
+        document.getElementById('question_text').innerText = text;
+        document.getElementById('question_text_shadow').innerText = text;
+
+        question_id = id-1;
+        question_iterator = 0;
+        question_mode = 0;
+        showQuestion();
     }
+    function backtomain(){
+        document.getElementById('se_click').play();
+        playMusic(0);
+        document.body.style.backgroundImage = "url(" + backgroundList[0] + ")";
+        document.getElementById('menu_container').style.display = 'block';
+        document.getElementById('question_container').style.display = 'none';
+        document.getElementById('result_container').style.display = 'none';
+    }
+
+    var question_id = 0;
+    var question_iterator = 0;
+    var question_mode = 0;
+    var isCorrect = false;
+
+    function showQuestion(){
+        var question_header = "Question No. " + (question_iterator+1) + "<br/><br/>"
+        if(question_mode==0){
+            document.getElementById('question_detail').innerHTML = question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
+            for(var i=1; i<5; i++){
+                document.getElementById('ans' + i).innerHTML = i;
+            }
+        }else if(question_mode==1){
+            document.getElementById('question_detail').innerHTML = question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
+            for(var i=1; i<5; i++){
+                document.getElementById('ans' + i).innerHTML = qList[question_id][question_iterator].q2_choice[i-1];
+            }
+        }else if(question_mode==2){
+            showResult();
+        }
+    }
+
+    function showResult(){
+        document.getElementById('question_container').style.display = 'none';
+        document.getElementById('result_container').style.display = 'block';
+        if(isCorrect){
+            document.getElementById('se_correct').play();
+            document.getElementById('result_header').innerText = 'Correct!';
+            document.getElementById('result_header_shadow').innerText = 'Correct!';
+            document.getElementById('result_markII').src = 'img/MarkII_FullBody.png';
+        }else{
+            document.getElementById('se_wrong').play();
+            document.getElementById('result_header').innerText = 'InCorrect!';
+            document.getElementById('result_header_shadow').innerText = 'InCorrect!';
+            document.getElementById('result_markII').src = 'img/MarkII_FullBody_BadLuck.png';
+        }
+        var result_header_text = qList[question_id][question_iterator].q_header + "<br/><br/>"
+        document.getElementById('result_detail').innerHTML = result_header_text + '<div style="text-align:left">' + qList[question_id][question_iterator].q_answer.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
+    }
+
+    function nextQuestion(){
+        document.getElementById('question_container').style.display = 'block';
+        document.getElementById('result_container').style.display = 'none';
+        if(question_iterator < qList[question_id].length-1){
+            question_iterator += 1;
+        }else{
+            question_iterator = 0;
+        }
+        question_mode = 0;
+        showQuestion();
+    }
+
+    function answerButton(id){
+        document.getElementById('se_click').play();
+        if(question_mode==0){
+            if(id==qList[question_id][question_iterator].q1_ans){
+                question_mode = 1;
+                isCorrect = true;
+                showQuestion();
+            }else{
+                question_mode = 2;
+                isCorrect = false;
+                showQuestion();
+            }
+        }else if(question_mode==1){
+            if(id==qList[question_id][question_iterator].q2_ans){
+                question_mode = 2;
+                isCorrect = true;
+                showQuestion();
+            }else{
+                question_mode = 2;
+                isCorrect = false;
+                showQuestion();
+            }
+        }
+    }
+
 </script>
-<body onload="addPlayEvent()" style="background-image: url(img/Background.png);">
-    <audio id="player" autoplay loop>
+<body style="background-image: url(img/Unlock_CG1.png);background-size: cover;overflow-y: hidden;">
+
+
+    <audio id="player_0" loop>
         <source src="music/00_DragonIceAcademia.ogg" type="audio/ogg">
       </audio>
-    <table style="width:100vw;padding-top:10vh;z-index: 200;">
-        <tbody>
-            <tr>
-                <td valign="center" align="center">
-                    <table style="width:inherit;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <img src="img/MarkII_Profile_512x512.png" style="max-width:50vh;width:80vw;max-height:50vh;margin:auto;"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    <div style="position:relative; max-width:50vh;width:80vw;height:2em;">
-                                        <div class="dark_button" style="max-width:50vh;width:80vw;display:flex;
-                                        position:absolute;color:white;align-items: center;
-                                        text-align: center;">
-                                            <div style="text-align: center;width:100%;">Start Game</div>
-                                        </div>
-                                        <img src="img/Dark_Btn.png" style="margin:auto;max-width:50vh;width:inherit;"/>
-                                        <img src="img/Dark_Btn2.png" style="margin:auto;max-width:50vh;width:inherit;"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <div style="position: absolute;bottom:1em;right:1em;z-index: -1;">
+      <audio id="player_1" loop>
+        <source src="music/01_Warmup.ogg" type="audio/ogg">
+      </audio>
+      <audio id="player_2" loop>
+        <source src="music/02_Idioms.ogg" type="audio/ogg">
+      </audio>
+      <audio id="player_3" loop>
+        <source src="music/03_V.Tenses.ogg" type="audio/ogg">
+      </audio>
+      <audio id="player_4" loop>
+        <source src="music/04_Participle.ogg" type="audio/ogg">
+      </audio>
+      <audio id="se_click">
+        <source src="se/se_click.ogg" type="audio/ogg">
+      </audio>
+      <audio id="se_correct">
+        <source src="se/se_correct.ogg" type="audio/ogg">
+      </audio>
+      <audio id="se_wrong">
+        <source src="se/se_wrong.ogg" type="audio/ogg">
+      </audio>
+
+
+
+      <div id="menu_container">
+        <div style="position: relative;padding-top:20vh;">
+            <div style="width:100vw;text-align:center;color:white;font-size:2em;">
+                Select Your Stage
+              </div>
+              <div style="position: absolute;top:20vh;left:2px;width:100vw;text-align:center;color:black;font-size:2em;z-index:-1">
+                Select Your Stage
+              </div>
+          </div>
+        <div style="width:100vw;height:31vh;overflow-x:auto;padding-top:1em;text-align: center;white-space: nowrap;">
+            <span>
+                <img src="img/0_Warmup.png" style="height:30vh;" onclick="select_menu(1, 'Warmup')"/>
+            </span>
+            <span>
+                <img src="img/1_Idioms.png" style="height:30vh;" onclick="select_menu(2, 'Idioms')"/>
+            </span>
+            <span>
+                <img src="img/2_VTenses.png" style="height:30vh;" onclick="select_menu(3, 'V.Tenses')"/>
+            </span>
+            <span>
+                <img src="img/3_Participle.png" style="height:30vh;" onclick="select_menu(4, 'Participle')"/>
+            </span>
+        </div>
+        <div style="position: absolute;bottom:-10vh;left:-10vh;z-index: -1;">
+            <img src="img/MarkII_FullBody.png" style="width:50vh"/>
+        </div>
+      </div>
+
+
+      <div id="question_container" style="display: none;">
+        <div style="position: relative;padding-top:10vh;">
+            <div id="question_text" style="width:100vw;text-align:center;color:white;font-size:2em;">
+                Question No.1
+              </div>
+              <div id="question_text_shadow" style="position: absolute;top:10vh;left:2px;width:100vw;text-align:center;color:black;font-size:2em;z-index:-1">
+                Question No.1
+              </div>
+          </div>
+        <div id="question_detail" style="height:30vh;overflow-y:auto;padding-top:1em;text-align: center;
+        padding-left: 5vw;padding-right:5vw;padding-bottom:1em;
+            color:white;text-align:center;background-color:black;">
+            Question Text
+        </div>
+        <div style="height:12vh;overflow-x: auto;text-align: center;white-space: nowrap;padding-top:1em;
+            ">
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="answerButton(1)"/>
+                <span id="ans1" style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Ans1</span>
+            </div>
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="answerButton(2)"/>
+                <span id="ans2" style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Ans2</span>
+            </div>
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="answerButton(3)"/>
+                <span id="ans3" style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Ans3</span>
+            </div>
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="answerButton(4)"/>
+                <span id="ans4" style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Ans4</span>
+            </div>
+        </div>
+        <div style="width:98vw;height:10vh;text-align: center;">
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="backtomain()"/>
+                <span style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Main menu</span>
+            </div>
+        </div>
+      </div>
+
+
+
+      <div id="result_container" style="display: none;">
+        <div style="position: relative;padding-top:10vh;">
+            <div id="result_header" style="width:100vw;text-align:center;color:white;font-size:2em;">
+                Correct!
+              </div>
+              <div id="result_header_shadow" style="position: absolute;top:10vh;left:2px;width:100vw;text-align:center;color:black;font-size:2em;z-index:-1">
+                Correct!
+              </div>
+          </div>
+        <div id="result_detail" style="height:40vh;overflow-y:auto;padding-top:1em;text-align: center;
+            padding-left: 5vw;padding-right:5vw;padding-bottom:1em;
+            color:white;text-align:center;background-color:black;">
+            Result Text
+        </div>
+        <div style="width:98vw;height:10vh;text-align: center;padding-top:1em;">
+            <div style="display: inline-block;position: relative;">
+                <img src="img/Dark_Btn.png" style="height:8vh;" onclick="nextQuestion()"/>
+                <span style="position: absolute;top:30%;left:0px;width:100%;color:white;text-align: center;pointer-events:none;">Next Question</span>
+            </div>
+        </div>
+        <div style="position: absolute;bottom:-20vh;left:-20vh;z-index:1;">
+            <img id="result_markII" src="img/MarkII_FullBody.png" style="width:50vh"/>
+        </div>
+      </div>
+
+    <div style="position: absolute;bottom:1em;right:1em;z-index:-1;">
         <img src="img/Title_Logo.png" style="height:3em;"/>
     </div>
 </body>
