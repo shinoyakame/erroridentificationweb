@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Error Identification</title>
+</head>
+<style>
+    @font-face {
+   font-family: baijamjuree;
+   src: url(font/BaiJamJuRee-Regular.ttf);
+   font-family: baijamjuree-bold;
+   src: url(font/BaiJamJuRee-Bold.ttf);
+}
+
+* {
+   font-family: baijamjuree-bold;
+}
+    .dark_button{
+        top:8vw;
+        font-size:8vw;
+    }
+    .dark_button~img:nth-child(2){
+        display: block;
+    }
+    .dark_button~img:nth-child(3){
+        display: none;
+    }
+    .dark_button:hover~img:nth-child(2){
+        display: none;
+    }
+    .dark_button:hover~img:nth-child(3){
+        display: block;
+    }
+    @media (min-width: 400px) {
+        .dark_button {
+            top:100%;
+            font-size:2em;
+        }
+    }
+    
+</style>
+<script>
+    function addPlayEvent(){
+        document.body.addEventListener("click", function () {
+        playMusic();
+        })
+    }
+    function playMusic(){
+        document.getElementById('player').play();
+    }
+</script>
+<body onload="addPlayEvent()" style="background-image: url(img/Background.png);">
+    <audio id="player" autoplay loop>
+        <source src="music/00_DragonIceAcademia.ogg" type="audio/ogg">
+      </audio>
+    <table style="width:100vw;padding-top:10vh;z-index: 200;">
+        <tbody>
+            <tr>
+                <td valign="center" align="center">
+                    <table style="width:inherit;">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="img/MarkII_Profile_512x512.png" style="max-width:50vh;width:80vw;max-height:50vh;margin:auto;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="center">
+                                    <div style="position:relative; max-width:50vh;width:80vw;height:2em;">
+                                        <div class="dark_button" style="max-width:50vh;width:80vw;display:flex;
+                                        position:absolute;color:white;align-items: center;
+                                        text-align: center;">
+                                            <div style="text-align: center;width:100%;">Start Game</div>
+                                        </div>
+                                        <img src="img/Dark_Btn.png" style="margin:auto;max-width:50vh;width:inherit;"/>
+                                        <img src="img/Dark_Btn2.png" style="margin:auto;max-width:50vh;width:inherit;"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="position: absolute;bottom:1em;right:1em;z-index: -1;">
+        <img src="img/Title_Logo.png" style="height:3em;"/>
+    </div>
+</body>
+
+</html>
