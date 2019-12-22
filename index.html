@@ -103,12 +103,12 @@ overflow-x: hidden;
     function showQuestion(){
         var question_header = "Question No. " + (question_iterator+1) + "<br/><br/>"
         if(question_mode==0){
-            document.getElementById('question_detail').innerHTML = question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
+            document.getElementById('question_detail').innerHTML = qIntroduction + question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
             for(var i=1; i<5; i++){
                 document.getElementById('ans' + i).innerHTML = i;
             }
         }else if(question_mode==1){
-            document.getElementById('question_detail').innerHTML = question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
+            document.getElementById('question_detail').innerHTML = qIntroduction + question_header + '<div style="text-align:left">' + qList[question_id][question_iterator].q_text.replace(/(?:\r\n|\r|\n)/g, '<br>') + '</div>';
             for(var i=1; i<5; i++){
                 document.getElementById('ans' + i).innerHTML = qList[question_id][question_iterator].q2_choice[i-1];
             }

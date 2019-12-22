@@ -785,3 +785,4 @@ var data = {
     ]
 }
 var qList = [data.q1,data.q2,data.q3,data.q4];
+var qIntroduction = "Choose the underlined part which is grammatically incorrect<br/>เลือกส่วนที่ขีดเส้นใต้ที่ผิดหลักไวยากรณ์<br/><br/>";
