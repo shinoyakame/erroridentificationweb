@@ -1,3 +1,3 @@
 # erroridentificationweb
 web-based version of erroridentificationgame
-https://shinoyakame.github.io/erroridentification
+https://shinoyakame.github.io/erroridentificationweb
